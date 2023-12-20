@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  # Ordering website service
+  ordering-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - cypress
+
+  # Cypress service for running tests
+  cypress:
+    image: cypress/included:7.2.0
+    working_dir: /e2e
+    environment:
+      - CYPRESS_baseUrl=http://ordering-website:3000
+    volumes:
+      - ./cypress:/e2e
+
